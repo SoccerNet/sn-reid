@@ -1,4 +1,4 @@
-# Soccernet - Re-Identification
+# SoccerNet - Re-Identification
 Welcome to the SoccerNet Development Kit for the Re-Identification Task and Challenge. \
 This kit is meant as a help to get started working with the soccernet data and the proposed task. 
 More information about the dataset can be found on our [official website](https://soccer-net.org/).
