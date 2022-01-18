@@ -52,12 +52,12 @@ print('Cython is {} times faster than python\n'.format(pytime / cytime))
 
 print('=> Using cuhk03\'s metric')
 pytime = timeit.timeit(
-    'metrics.evaluate_rank(distmat, q_pids, g_pids, q_camids, g_camids, max_rank, use_metric_cuhk03=True, use_cython=False)',
+    'metrics.evaluate_rank(distmat, q_pids, g_pids, q_camids, g_camids, max_rank, eval_metric="cuhk03", use_cython=False)',
     setup=setup,
     number=20
 )
 cytime = timeit.timeit(
-    'metrics.evaluate_rank(distmat, q_pids, g_pids, q_camids, g_camids, max_rank, use_metric_cuhk03=True, use_cython=True)',
+    'metrics.evaluate_rank(distmat, q_pids, g_pids, q_camids, g_camids, max_rank, eval_metric="cuhk03", use_cython=True)',
     setup=setup,
     number=20
 )

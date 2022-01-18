@@ -1,4 +1,5 @@
 from __future__ import division, print_function, absolute_import
+import json
 import time
 import numpy as np
 import os.path as osp
@@ -125,9 +126,10 @@ class Engine(object):
         normalize_feature=False,
         visrank=False,
         visrank_topk=10,
-        use_metric_cuhk03=False,
+        eval_metric='default',
         ranks=[1, 5, 10, 20],
-        rerank=False
+        rerank=False,
+        export_distmat=False
     ):
         r"""A unified pipeline for training and evaluating a model.
 
@@ -153,17 +155,14 @@ class Engine(object):
                 enable ``visrank`` when ``test_only`` is True. The ranked images will be saved to
                 "save_dir/visrank_dataset", e.g. "save_dir/visrank_market1501".
             visrank_topk (int, optional): top-k ranked images to be visualized. Default is 10.
-            use_metric_cuhk03 (bool, optional): use single-gallery-shot setting for cuhk03.
-                Default is False. This should be enabled when using cuhk03 classic split.
+            use_metric_cuhk03 (str, optional): use multi-gallery-shot setting with 'default', single-gallery-shot
+                setting with 'cuhk03' or action-to-replay setting with 'soccernetv3'.
+                Default is 'default'.
             ranks (list, optional): cmc ranks to be computed. Default is [1, 5, 10, 20].
             rerank (bool, optional): uses person re-ranking (by Zhong et al. CVPR'17).
                 Default is False. This is only enabled when test_only=True.
+            export_distmat: (bool, optional): export query to gallery distmat to CSV file for each target dataset
         """
-
-        if visrank and not test_only:
-            raise ValueError(
-                'visrank can be set to True only if test_only=True'
-            )
 
         if test_only:
             self.test(
@@ -172,9 +171,10 @@ class Engine(object):
                 visrank=visrank,
                 visrank_topk=visrank_topk,
                 save_dir=save_dir,
-                use_metric_cuhk03=use_metric_cuhk03,
+                eval_metric=eval_metric,
                 ranks=ranks,
-                rerank=rerank
+                rerank=rerank,
+                export_distmat=export_distmat
             )
             return
 
@@ -200,10 +200,10 @@ class Engine(object):
                 rank1 = self.test(
                     dist_metric=dist_metric,
                     normalize_feature=normalize_feature,
-                    visrank=visrank,
+                    visrank=False,
                     visrank_topk=visrank_topk,
                     save_dir=save_dir,
-                    use_metric_cuhk03=use_metric_cuhk03,
+                    eval_metric=eval_metric,
                     ranks=ranks
                 )
                 self.save_model(self.epoch, rank1, save_dir)
@@ -216,8 +216,9 @@ class Engine(object):
                 visrank=visrank,
                 visrank_topk=visrank_topk,
                 save_dir=save_dir,
-                use_metric_cuhk03=use_metric_cuhk03,
-                ranks=ranks
+                eval_metric=eval_metric,
+                ranks=ranks,
+                export_distmat=export_distmat
             )
             self.save_model(self.epoch, rank1, save_dir)
 
@@ -296,9 +297,10 @@ class Engine(object):
         visrank=False,
         visrank_topk=10,
         save_dir='',
-        use_metric_cuhk03=False,
+        eval_metric='default',
         ranks=[1, 5, 10, 20],
-        rerank=False
+        rerank=False,
+        export_distmat=False
     ):
         r"""Tests model on target datasets.
 
@@ -315,7 +317,7 @@ class Engine(object):
         """
         self.set_model_mode('eval')
         targets = list(self.test_loader.keys())
-
+        last_rank1 = 0
         for name in targets:
             domain = 'source' if name in self.datamanager.sources else 'target'
             print('##### Evaluating {} ({}) #####'.format(name, domain))
@@ -330,16 +332,19 @@ class Engine(object):
                 visrank=visrank,
                 visrank_topk=visrank_topk,
                 save_dir=save_dir,
-                use_metric_cuhk03=use_metric_cuhk03,
+                eval_metric=eval_metric,
                 ranks=ranks,
-                rerank=rerank
+                rerank=rerank,
+                export_distmat=export_distmat
             )
 
-            if self.writer is not None:
+            if self.writer is not None and rank1 is not None and mAP is not None:
                 self.writer.add_scalar(f'Test/{name}/rank1', rank1, self.epoch)
                 self.writer.add_scalar(f'Test/{name}/mAP', mAP, self.epoch)
+            if rank1 is not None:
+                last_rank1 = rank1
 
-        return rank1
+        return last_rank1
 
     @torch.no_grad()
     def _evaluate(
@@ -352,9 +357,10 @@ class Engine(object):
         visrank=False,
         visrank_topk=10,
         save_dir='',
-        use_metric_cuhk03=False,
+        eval_metric='default',
         ranks=[1, 5, 10, 20],
-        rerank=False
+        rerank=False,
+        export_distmat=False
     ):
         batch_time = AverageMeter()
 
@@ -403,21 +409,8 @@ class Engine(object):
             distmat_gg = metrics.compute_distance_matrix(gf, gf, dist_metric)
             distmat = re_ranking(distmat, distmat_qq, distmat_gg)
 
-        print('Computing CMC and mAP ...')
-        cmc, mAP = metrics.evaluate_rank(
-            distmat,
-            q_pids,
-            g_pids,
-            q_camids,
-            g_camids,
-            use_metric_cuhk03=use_metric_cuhk03
-        )
-
-        print('** Results **')
-        print('mAP: {:.1%}'.format(mAP))
-        print('CMC curve')
-        for r in ranks:
-            print('Rank-{:<3}: {:.1%}'.format(r, cmc[r - 1]))
+        if export_distmat:
+            self.export_ranking_results_for_ext_eval(distmat, q_pids, q_camids, g_pids, g_camids, save_dir, dataset_name)
 
         if visrank:
             visualize_ranked_results(
@@ -427,10 +420,29 @@ class Engine(object):
                 width=self.datamanager.width,
                 height=self.datamanager.height,
                 save_dir=osp.join(save_dir, 'visrank_' + dataset_name),
-                topk=visrank_topk
+                topk=visrank_topk,
+                display_border=not query_loader.dataset.hidden_labels,
             )
 
-        return cmc[0], mAP
+        if not query_loader.dataset.hidden_labels:
+            print('Computing CMC and mAP ...')
+            cmc, mAP = metrics.evaluate_rank(
+                distmat,
+                q_pids,
+                g_pids,
+                q_camids,
+                g_camids,
+                eval_metric=eval_metric
+            )
+            print('** Results **')
+            print('mAP: {:.1%}'.format(mAP))
+            print('CMC curve')
+            for r in ranks:
+                print('Rank-{:<3}: {:.1%}'.format(r, cmc[r - 1]))
+            return cmc[0], mAP
+        else:
+            print("Couldn't compute CMC and mAP because of hidden identity labels.")
+            return None, None
 
     def compute_loss(self, criterion, outputs, targets):
         if isinstance(outputs, (tuple, list)):
@@ -476,3 +488,38 @@ class Engine(object):
             open_specified_layers(model, open_layers)
         else:
             open_all_layers(model)
+
+    def export_ranking_results_for_ext_eval(self, distmat, q_pids, q_action_indices, g_pids, g_action_indices, save_dir, dataset_name):
+
+        date = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S:%f')[:-3]
+        distmat_filename = osp.join(save_dir, "distmat_" + dataset_name + "_" + date + ".json")
+        print("Exporting distmat to '{}' for external evaluation...".format(distmat_filename))
+
+        num_q, num_g = distmat.shape
+        indices = np.argsort(distmat, axis=1)
+        num_valid_q = 0
+        ranking_results = {}
+        for q_idx in range(num_q):
+            # get query pid and action_idx
+            # q_pid = q_pids[q_idx]
+            q_action_idx = q_action_indices[q_idx]
+
+            # remove gallery samples from different action than the query
+            order = indices[q_idx]
+            remove = (g_action_indices[order] != q_action_idx)
+            keep = np.invert(remove)
+            g_ranking = order[keep]
+            # g_ranking_pids = g_pids[g_ranking]
+            # gallery_distances = distmat[q_idx][keep]
+
+            if g_ranking.size == 0:
+                print("Does not appear in gallery: q_idx {} - q_pid {} - q_action_idx {}".format(q_idx, q_pids[q_idx], q_action_idx))
+                # this condition is true when query identity does not appear in gallery
+                continue
+
+            ranking_results[q_idx] = g_ranking.tolist()
+            num_valid_q += 1.
+
+        # dump ranking results to disk as json file
+        with open(distmat_filename, 'w') as fp:
+            json.dump(ranking_results, fp, sort_keys=True, indent=4)

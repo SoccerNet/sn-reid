@@ -39,6 +39,10 @@ class Dataset(object):
     # In this case, "combineall=True" is not used for them
     _train_only = False
 
+    # Set to True for datasets with test sets having hidden/private identity labels.
+    # Resulting query to gallery distmat should be exported for external evaluation with private identity labels.
+    hidden_labels = False
+
     def __init__(
         self,
         train,
@@ -54,11 +58,11 @@ class Dataset(object):
         # extend 3-tuple (img_path(s), pid, camid) to
         # 4-tuple (img_path(s), pid, camid, dsetid) by
         # adding a dataset indicator "dsetid"
-        if len(train[0]) == 3:
+        if len(train) != 0 and len(train[0]) == 3:
             train = [(*items, 0) for items in train]
-        if len(query[0]) == 3:
+        if len(query) != 0 and len(query[0]) == 3:
             query = [(*items, 0) for items in query]
-        if len(gallery[0]) == 3:
+        if len(gallery) != 0 and len(gallery[0]) == 3:
             gallery = [(*items, 0) for items in gallery]
 
         self.train = train

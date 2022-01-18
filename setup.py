@@ -6,7 +6,7 @@ from Cython.Build import cythonize
 
 
 def readme():
-    with open('README.rst') as f:
+    with open('TORCHREID_README.rst') as f:
         content = f.read()
     return content
 

@@ -20,6 +20,7 @@ def get_default_config():
     cfg.data.root = 'reid-data'
     cfg.data.sources = ['market1501']
     cfg.data.targets = ['market1501']
+    cfg.data.eval_metric = 'default' # metric for evaluation, choose from 'default', 'cuhk03', 'soccernet'
     cfg.data.workers = 4 # number of data loading workers
     cfg.data.split_id = 0 # split index
     cfg.data.height = 256 # image height
@@ -37,7 +38,6 @@ def get_default_config():
     cfg.cuhk03 = CN()
     cfg.cuhk03.labeled_images = False # use labeled images, if False, use detected images
     cfg.cuhk03.classic_split = False # use classic split by Li et al. CVPR14
-    cfg.cuhk03.use_metric_cuhk03 = False # use cuhk03's metric for evaluation
 
     # sampler
     cfg.sampler = CN()
@@ -201,7 +201,7 @@ def engine_run_kwargs(cfg):
         'normalize_feature': cfg.test.normalize_feature,
         'visrank': cfg.test.visrank,
         'visrank_topk': cfg.test.visrank_topk,
-        'use_metric_cuhk03': cfg.cuhk03.use_metric_cuhk03,
+        'eval_metric': cfg.data.eval_metric,
         'ranks': cfg.test.ranks,
         'rerank': cfg.test.rerank
     }

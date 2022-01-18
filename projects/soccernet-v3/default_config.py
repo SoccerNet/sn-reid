@@ -15,9 +15,9 @@ def get_default_config():
     cfg.data = CN()
     cfg.data.type = 'image'
     cfg.data.root = 'reid-data'
-    cfg.data.sources = ['market1501']
-    cfg.data.targets = ['market1501']
-    cfg.data.eval_metric = 'default'  # metric for evaluation, choose from 'default', 'cuhk03', 'soccernetv3'
+    cfg.data.sources = ['soccernetv3']
+    cfg.data.targets = ['soccernetv3']
+    cfg.data.eval_metric = 'soccernetv3'  # metric for evaluation, choose from 'default', 'cuhk03', 'soccernetv3'
     cfg.data.workers = 4 # number of data loading workers
     cfg.data.split_id = 0 # split index
     cfg.data.height = 256 # image height
@@ -36,11 +36,14 @@ def get_default_config():
     cfg.cuhk03 = CN()
     cfg.cuhk03.labeled_images = False # use labeled images, if False, use detected images
     cfg.cuhk03.classic_split = False # use classic split by Li et al. CVPR14
+    cfg.soccernetv3 = CN()
+    cfg.soccernetv3.training_subset = 1.0 # Use 'training_subset'% of total number of training set actions at training
+    # stage. Use this option for faster training. Set to 1.0 to use full training set.
 
     # sampler
     cfg.sampler = CN()
-    cfg.sampler.train_sampler = 'RandomSampler' # sampler for source train loader
-    cfg.sampler.train_sampler_t = 'RandomSampler' # sampler for target train loader
+    cfg.sampler.train_sampler = 'RandomIdentitySampler' # sampler for source train loader
+    cfg.sampler.train_sampler_t = 'RandomIdentitySampler' # sampler for target train loader
     cfg.sampler.num_instances = 4 # number of instances per identity for RandomIdentitySampler
     cfg.sampler.num_cams = 1 # number of cameras to sample in a batch (for RandomDomainSampler)
     cfg.sampler.num_datasets = 1 # number of datasets to sample in a batch (for RandomDatasetSampler)
@@ -105,6 +108,7 @@ def get_default_config():
     cfg.test.rerank = False # use person re-ranking
     cfg.test.visrank = False # visualize ranked results (only available when cfg.test.evaluate=True)
     cfg.test.visrank_topk = 10 # top-k ranks to visualize
+    cfg.test.export_distmat = False # export query to gallery distmat to CSV file for each target dataset
 
     return cfg
 
@@ -136,6 +140,7 @@ def imagedata_kwargs(cfg):
         'cuhk03_labeled': cfg.cuhk03.labeled_images,
         'cuhk03_classic_split': cfg.cuhk03.classic_split,
         'market1501_500k': cfg.market1501.use_500k_distractors,
+        'soccernetv3_training_subset': cfg.soccernetv3.training_subset,
     }
 
 
@@ -208,5 +213,6 @@ def engine_run_kwargs(cfg):
         'visrank_topk': cfg.test.visrank_topk,
         'eval_metric': cfg.data.eval_metric,
         'ranks': cfg.test.ranks,
-        'rerank': cfg.test.rerank
+        'rerank': cfg.test.rerank,
+        'export_distmat': cfg.test.export_distmat,
     }

@@ -16,7 +16,7 @@ RED = (0, 0, 255)
 
 
 def visualize_ranked_results(
-    distmat, dataset, data_type, width=128, height=256, save_dir='', topk=10
+    distmat, dataset, data_type, width=128, height=256, save_dir='', topk=10, display_border=True
 ):
     """Visualizes ranked results.
 
@@ -35,6 +35,7 @@ def visualize_ranked_results(
         save_dir (str): directory to save output images.
         topk (int, optional): denoting top-k images in the rank list to be visualized.
             Default is 10.
+        display_border (bool, optional): use green/red border around each image to indicate correct/incorrect match
     """
     num_q, num_g = distmat.shape
     mkdir_if_missing(save_dir)
@@ -116,15 +117,16 @@ def visualize_ranked_results(
                     border_color = GREEN if matched else RED
                     gimg = cv2.imread(gimg_path)
                     gimg = cv2.resize(gimg, (width, height))
-                    gimg = cv2.copyMakeBorder(
-                        gimg,
-                        BW,
-                        BW,
-                        BW,
-                        BW,
-                        cv2.BORDER_CONSTANT,
-                        value=border_color
-                    )
+                    if display_border:
+                        gimg = cv2.copyMakeBorder(
+                            gimg,
+                            BW,
+                            BW,
+                            BW,
+                            BW,
+                            cv2.BORDER_CONSTANT,
+                            value=border_color
+                        )
                     gimg = cv2.resize(gimg, (width, height))
                     start = rank_idx*width + rank_idx*GRID_SPACING + QUERY_EXTRA_SPACING
                     end = (

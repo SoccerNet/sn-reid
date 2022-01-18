@@ -23,15 +23,21 @@ Credit to https://github.com/luzai
 
 
 # Main interface
-cpdef evaluate_cy(distmat, q_pids, g_pids, q_camids, g_camids, max_rank, use_metric_cuhk03=False):
+cpdef evaluate_cy(distmat, q_pids, g_pids, q_camids, g_camids, max_rank, eval_metric='default'):
     distmat = np.asarray(distmat, dtype=np.float32)
     q_pids = np.asarray(q_pids, dtype=np.int64)
     g_pids = np.asarray(g_pids, dtype=np.int64)
     q_camids = np.asarray(q_camids, dtype=np.int64)
     g_camids = np.asarray(g_camids, dtype=np.int64)
-    if use_metric_cuhk03:
+    if eval_metric == 'default':
+        return eval_market1501_cy(distmat, q_pids, g_pids, q_camids, g_camids, max_rank)
+    elif eval_metric == 'cuhk03':
         return eval_cuhk03_cy(distmat, q_pids, g_pids, q_camids, g_camids, max_rank)
-    return eval_market1501_cy(distmat, q_pids, g_pids, q_camids, g_camids, max_rank)
+    elif eval_metric == 'soccernetv3':
+        raise NotImplementedError
+        # return eval_soccernetv3_cy(distmat, q_pids, g_pids, q_camids, g_camids, max_rank)
+    else:
+        raise ValueError("Incorrect eval_metric value '{}'".format(eval_metric))
 
 
 cpdef eval_cuhk03_cy(float[:,:] distmat, int64_t[:] q_pids, int64_t[:]g_pids,
