@@ -6,9 +6,7 @@ More information about the dataset can be found on our [official website](https:
 In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
 The winner of the competition will be announced in June 2022.
 
-<a href="">
-<p align="center"><img src="images/Thumbnail.png" width="720"></p>
-</a>
+<p align="center"><img src="images/multiview_links.png" width="640"></p>
 
 [comment]: <> (<p align="center"><img src="images/GraphicalAbstract-SoccerNet-V2-1.png" width="640"></p>)
 
@@ -17,7 +15,9 @@ action spotting, camera shot segmentation with boundary detection, replay ground
 The participation deadline is fixed at the 30th of May 2022.
 The official rules and guidelines are available on [ChallengeRules.md](ChallengeRules.md).
 
-<p align="center"><img src="images/multiview_links.png" width="640"></p>
+<a href="https://youtu.be/tA9E1hkiyB0">
+<p align="center"><img src="images/Thumbnail.png" width="720"></p>
+</a>
 
 ## Challenge description
 The SoccerNet Re-Identification (ReID) dataset is composed of 340.993 players thumbnails extracted from image frames of broadcast videos from 400 soccer games within 6 major leagues.
