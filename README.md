@@ -75,6 +75,13 @@ In above instructions, replace `/path/to/project/datasets` by any path of your c
 
 For further information, have a look at [soccernetv3.py](torchreid/data/datasets/image/soccernetv3.py)).
 
+| Dataset       | Size |
+| ---           |  ---    |
+| train.zip     | 12.12GB
+| talid.zip     | 2.35GB
+| test.zip      | 2.41GB
+| thallenge.zip | 1.75GB
+
 ### How to export your ranking results for the challenge set
 Enable the `test.export_ranking_results` config in [default_config.py](benchmarks/baseline/default_config.py) or [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) 
 to export all ranking results for each target dataset. 
