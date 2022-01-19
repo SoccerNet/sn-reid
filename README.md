@@ -25,7 +25,7 @@ The official rules and guidelines are available on [ChallengeRules.md](Challenge
 The SoccerNet Re-Identification (ReID) dataset is composed of 340.993 players thumbnails extracted from image frames of broadcast videos from 400 soccer games within 6 major leagues.
 The goal of the challenge is to re-identify soccer players across multiple camera viewpoints depicting the same action during the game.
 
-Compared to traditional street surveillance type re-identification dataset, the SoccerNet-v3 ReID dataset is particularly \ 
+Compared to traditional street surveillance type re-identification dataset, the SoccerNet-v3 ReID dataset is particularly
 challenging because soccer players from the same team have very similar appearance, which makes it hard to tell them apart.
 
 
@@ -37,14 +37,14 @@ Make sure to have a look at the original [Torchreid Readme](TORCHREID_README.rst
 For installation guidelines, please follow the instructions in the original [Torchreid Readme](TORCHREID_README.rst).
 
 ### How to train and test a baseline model
-We provide a basic script in [benchmarks/baseline](benchmarks/baseline) for training a baseline model on the Soccernet-v3 training set, evaluate rank-1 and mAP performance on the Soccernet-v3 \
+We provide a basic script in [benchmarks/baseline](benchmarks/baseline) for training a baseline model on the Soccernet-v3 training set, evaluate rank-1 and mAP performance on the Soccernet-v3
 validation and test set, and finally export ranking results on the Soccernet-v3 challenge set for external evaluation.
 
 To train the baseline model, run:
 
 <code>python benchmarks/baseline/main.py --config-file configs/baseline_config.yaml</code>
 
-Running this script will automatically download the dataset in the folder specified by the _data.root_ config.
+Running this script will automatically download the dataset in the folder specified by the `data.root` config.
 
 Have a look at the YAML configuration file [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) and related default configuration [default_config.py](benchmarks/baseline/default_config.py) for more information about the available options.
 
