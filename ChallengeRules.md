@@ -1,23 +1,19 @@
-# Guidelines for the Action Spotting challenge
+# Guidelines for the SoccerNet Re-Identification Challenge
 
-The 2nd [Action Spotting Challenge]() will be held at the 
-official [ActivityNet Workshop](http://activity-net.org/challenges/2021/challenge.html) at CVPR 2022! 
+The 1st [SoccerNet Person Re-Identification Challenge]() will be held from January to June 2022!
 Subscribe (watch) the repo to receive the latest info regarding timeline and prizes!
 
 
-SoccerNet-v2 is a large-scale dataset build upon SoccerNet that benchmarks the tasks of action spotting, camera shot segmentation / boundary detection and replay grounding. 
-SoccerNet-v2 is composed of 300k manual annotations, span 500 complete soccer games from six main European leagues, covering three seasons from 2014 to 2017 and a total duration of 764 hours.
+SoccerNet-v3 ReID is a large-scale dataset build upon SoccerNet that benchmarks the task of player re-identification across multiple camera views from broadcast soccer videos. 
+SoccerNet-v3 is composed of 300k manual annotations, span 500 complete soccer games from six main European leagues, covering three seasons from 2014 to 2017 and a total duration of 764 hours.
 
-We propose the SoccerNet-v2 challenge to encourage the development of state-of-the-art algorithm for Generic Soccer Video Understanding. 
-It is composed of 2 tasks:
- - **Action Spotting**: Spot the actions on a complete video of soccer game.
- - **Replay Grounding**: Ground the timestamp of the actions represented in a specific replay.
+We propose the SoccerNet-v3 ReID challenge to encourage the development of state-of-the-art ReID algorithm for sport player retrieval in broadcast videos.
 
-We provide an [evaluation server]() for anyone competing in the SoccerNet-v2 challenge. 
+We provide an [evaluation server]() for anyone competing in the SoccerNet-v3 ReID challenge. 
 This evaluation server handles predictions for the open **test** set and the segregated **challenge** set.
 
-Winners will be announced at ActivityNet Workshop at CVPR 2022. 
-Prizes 💲💲💲 include $1000 cash award ($500 for Action Spotting and $500 for Replay Grounding), sponsored by [Second Spectrum](https://www.secondspectrum.com/index.html).
+Winners will be announced in June 2022. 
+Prizes 💲💲💲 include $1000 cash award, sponsored by [Synergy Sports](https://synergysports.com/), a [SportRadar](https://www.sportradar.com/) division.
 
 
 ## Who can participate / How to participate?
@@ -27,18 +23,17 @@ Prizes 💲💲💲 include $1000 cash award ($500 for Action Spotting and $500 
  - Each team can have one or more members. 
  - An individual/team can compete on both task.
  - An individual associated with multiple teams (for a given task) or a team with multiple accounts will be disqualified.
- - On both task, a particpant can only use the video stream as input (visual and/or audio).
- - To help the participants, we provide pre-extracted ResNet-152 visual features at 2fps.
- - A particpant is allowed to extract its own visual/audio features with any pre-trained model.
+ - To solve the ReID task, a participant can only use players image crops and labels provided in the SoccerNet-v3 ReID dataset, which means using external information from other versions of the SoccerNet-v3 dataset is not allowed.
+ - Participants can therefore only rely on player appearance to solve the task.
+ - If you have any doubts regarding these rules, please contact the challenge administrators.
+
 
 ## How to win / What is the prize?
 
- - For each task, the winner is the individual/team who reach the highest performance on the **challenge** set.
- - The metrics taken into consideration are the **tight Average-mAP for Action Spotting** and the **tight Average-AP for Replay Grounding**.
+ - The winner will the individual/team who reaches the highest **mAP** performance on the **challenge** set.
  - The deadline to submit your results is May 30th at 11.59 pm Pacific Time.
- - The teams that perform best in each task will be granted $500 from our sponsor [Second Spectrum](https://www.secondspectrum.com/index.html).
- - In order to be eligible for the prize, we require the individual/team to provide a short report describing the details of the methodology (CVPR format, max 2 pages)
-
+ - The teams that perform best in each task will be granted $500 from our sponsor [Synergy Sports](https://synergysports.com/), a [SportRadar](https://www.sportradar.com/) division.
+ - In order to be eligible for the prize, we require the individual/team to provide a short report describing the details of the methodology (CVPR format, max 3 pages)
 
 
 ## Important dates
@@ -51,4 +46,7 @@ Note that these dates are tentative and subject to changes if necessary.
  - **June 6:** Deadline for submitting the report.
  - **June TBD:** A full-day workshop at CVPR 2022.
 
-For any further doubt or concern, please raise an issue in that repository, or contact us directly on [Discord](https://discord.gg/SM8uHj9mkP).
+
+## Contact
+
+For any further doubt or concern, please raise a GitHub issue in this repository, or contact us directly on [Discord](https://discord.gg/SM8uHj9mkP).

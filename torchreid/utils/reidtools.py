@@ -109,7 +109,9 @@ def visualize_ranked_results(
         rank_idx = 1
         for g_idx in indices[q_idx, :]:
             gimg_path, gpid, gcamid = gallery[g_idx][:3]
-            invalid = (qpid == gpid) & (qcamid == gcamid)
+            # for Soccernet, camid contains action_idx. Only samples within the same action should be compared
+            invalid = (qcamid != gcamid)
+            # invalid = (qpid == gpid) & (qcamid == gcamid)
 
             if not invalid:
                 matched = gpid == qpid

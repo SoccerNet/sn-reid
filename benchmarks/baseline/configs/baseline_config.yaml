@@ -1,0 +1,39 @@
+model:
+  name: 'resnet50_fc512'
+
+data:
+  type: 'image'
+  height: 256
+  width: 128
+  workers: 4
+  sources: ['soccernetv3']
+  targets: ['soccernetv3', 'soccernetv3_test', 'soccernetv3_challenge']
+  # training and validation sets are in the 'soccernetv3' dataset
+  # test set is in the 'soccernetv3_test' dataset
+  # challenge set is in the 'soccernetv3_challenge' dataset
+
+soccernetv3:
+  training_subset: 0.01 # train model on 1% of training set samples
+
+sampler:
+  train_sampler: RandomIdentitySampler
+  train_sampler_t: RandomIdentitySampler
+  num_instances: 4
+
+loss:
+  name: 'triplet'
+  softmax:
+    label_smooth: True
+  triplet:
+    margin: 0.3
+    weight_t: 0.5
+    weight_x: 0.5
+
+train:
+  batch_size: 32
+  print_freq: 10
+  max_epoch: 10
+
+test:
+  ranks: [1]
+  export_ranking_results: True # export ranking result to JSON file for external evaluation

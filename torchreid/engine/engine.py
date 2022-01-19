@@ -129,7 +129,7 @@ class Engine(object):
         eval_metric='default',
         ranks=[1, 5, 10, 20],
         rerank=False,
-        export_distmat=False
+        export_ranking_results=False
     ):
         r"""A unified pipeline for training and evaluating a model.
 
@@ -161,7 +161,7 @@ class Engine(object):
             ranks (list, optional): cmc ranks to be computed. Default is [1, 5, 10, 20].
             rerank (bool, optional): uses person re-ranking (by Zhong et al. CVPR'17).
                 Default is False. This is only enabled when test_only=True.
-            export_distmat: (bool, optional): export query to gallery distmat to CSV file for each target dataset
+            export_ranking_results: (bool, optional): export query to gallery distmat to CSV file for each target dataset
         """
 
         if test_only:
@@ -174,7 +174,7 @@ class Engine(object):
                 eval_metric=eval_metric,
                 ranks=ranks,
                 rerank=rerank,
-                export_distmat=export_distmat
+                export_ranking_results=export_ranking_results
             )
             return
 
@@ -218,7 +218,7 @@ class Engine(object):
                 save_dir=save_dir,
                 eval_metric=eval_metric,
                 ranks=ranks,
-                export_distmat=export_distmat
+                export_ranking_results=export_ranking_results
             )
             self.save_model(self.epoch, rank1, save_dir)
 
@@ -300,7 +300,7 @@ class Engine(object):
         eval_metric='default',
         ranks=[1, 5, 10, 20],
         rerank=False,
-        export_distmat=False
+        export_ranking_results=False
     ):
         r"""Tests model on target datasets.
 
@@ -335,7 +335,7 @@ class Engine(object):
                 eval_metric=eval_metric,
                 ranks=ranks,
                 rerank=rerank,
-                export_distmat=export_distmat
+                export_ranking_results=export_ranking_results
             )
 
             if self.writer is not None and rank1 is not None and mAP is not None:
@@ -360,7 +360,7 @@ class Engine(object):
         eval_metric='default',
         ranks=[1, 5, 10, 20],
         rerank=False,
-        export_distmat=False
+        export_ranking_results=False
     ):
         batch_time = AverageMeter()
 
@@ -409,7 +409,7 @@ class Engine(object):
             distmat_gg = metrics.compute_distance_matrix(gf, gf, dist_metric)
             distmat = re_ranking(distmat, distmat_qq, distmat_gg)
 
-        if export_distmat:
+        if export_ranking_results:
             self.export_ranking_results_for_ext_eval(distmat, q_pids, q_camids, g_pids, g_camids, save_dir, dataset_name)
 
         if visrank:
@@ -492,7 +492,7 @@ class Engine(object):
     def export_ranking_results_for_ext_eval(self, distmat, q_pids, q_action_indices, g_pids, g_action_indices, save_dir, dataset_name):
 
         date = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S:%f')[:-3]
-        distmat_filename = osp.join(save_dir, "distmat_" + dataset_name + "_" + date + ".json")
+        distmat_filename = osp.join(save_dir, "ranking_results_" + dataset_name + "_" + date + ".json")
         print("Exporting distmat to '{}' for external evaluation...".format(distmat_filename))
 
         num_q, num_g = distmat.shape

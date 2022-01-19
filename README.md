@@ -1,103 +1,102 @@
-# Soccernet - Re-Identification
-Welcome to the SoccerNet Development Kit for the Re-Identification Task and Challenge. \
-This kit is meant as a help to get started working with the soccernet data and the proposed task. 
+# SoccerNet Re-Identification
+Welcome to the Development Kit for the SoccerNet Re-Identification Task and Challenge.
+This kit is meant as a help to get started working with the SoccerNet data and the proposed task.
+In this task, participants will have to re-identify soccer players across multiple camera viewpoints.
 More information about the dataset can be found on our [official website](https://soccer-net.org/).
-In this repository, you will find all the instructions and codebase for participating to this challenge and get a chance to win the 1000$ prize money!
-The winner of the competition will be announced during the CVSport workshop at CVPR 2022.
+In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
+The winner of the competition will be announced in June 2022.
 
-SoccerNet Action Spotting is part of the SoccerNet-v2 dataset, which is an extension of SoccerNet-v1 with new and challenging tasks including
-action spotting, camera shot segmentation with boundary detection, and a novel replay grounding task.
+SoccerNet Re-Identification (ReID) is part of the SoccerNet-v3 dataset, which is an extension of SoccerNet-v2 with new and challenging tasks including 
+action spotting, camera shot segmentation with boundary detection, replay grounding, calibration, multi-view player re-identification and multi-player tracking.
 
+<a href="">
+<p align="center"><img src="images/Thumbnail.png" width="720"></p>
+</a>
+
+[comment]: <> (<p align="center"><img src="images/GraphicalAbstract-SoccerNet-V2-1.png" width="640"></p>)
+
+
+The participation deadline is fixed at the 30th of May 2022.
+The official rules and guidelines are available on [ChallengeRules.md](ChallengeRules.md).
+
+<p align="center"><img src="images/multiview_links.png" width="640"></p>
 
 ## Challenge description
-The goal of this competition is to re-identify soccer player across multiple images captured from various camera viewpoints.
-In this Soccernet ReID dataset, we provide a list of xxx soccer actions, each actions being composed of multiple image frames captured at the same time from various camera viewpoints.
-Explain action frame vs replay frame
-The goal of the challenge is to re-identify each soccer player seen in the action frame across the different replay frame.
-For that purpose, each bounding box in each action frame will be considered as a query, and bounding boxes from the corresponding replay frame will be ranked according to their distance to this query.
-The dataset is divided into a training, validation, test and challenge set.
-Labels for the challenge set are kept secret as participants to the challenge will be ranked according to their performance on that challenge set.
-The winner of the challenge will be the participant with the highest mAP score on the challenge set. 
+The SoccerNet Re-Identification (ReID) dataset is composed of 340.993 players thumbnails extracted from image frames of broadcast videos from 400 soccer games within 6 major leagues.
+The goal of the challenge is to re-identify soccer players across multiple camera viewpoints depicting the same action during the game.
 
-challenge objective: ranking action vs replay + perf metric
-testing is performed within same action
-Compared to traditional street surveillance type re-identification dataset, the Soccernet-v3 ReID dataset is particularly \ 
-challenging because of football players from the same team have very similar appearance, which makes it hard to tell them apart.
-On the other hand, each identity has a few number of samples, which render the model harder to train.
-There is also a big variation in image resolution.
-
-![alt text](projects/soccernet-v3/figures/soccernet-v3-reid-illustration-saved.pdf)
-
-
-## Dataset structure
-
-ReID samples are organized following the original Soccernet dataset structure.
-The Soccernet-v3 ReID dataset is organized within a tree folder structure :
-root -> set type {train, valid, test, challenge} -> championship -> season -> game -> action
-Each action contains a set of samples, which are bounding boxes of players or referees cropped from the original Soccernet-v3 dataset.
-Annotations are provided within the sample filename:
-
-Naming convention:
-e.g. '192245_1798_0_11_Player-team-right_a_125a000322b119fb0014.png'
-<person_idx>_<action_idx>_<frame_idx>_<bbox_idx>_<class>_<ID>_<UAI>.png
-
-1. person_idx: index from 0 to xxx, unique for each identity within an given action_idx
-2. action_idx: action index, unique for each action frame and its related replay frames
-3. frame_idx: frame index, 0 for action frame and >0 for replay frames
-4. bbox_idx: bbox index (among other 'person' bboxes) within the given frame
-5. class: bbox type/class within :
-	1. "Player team left"
-	2. "Player team right"
-	3. "Goalkeeper team left"
-	4. "Goalkeeper team right"
-	5. "Main referee"
-	6. "Side referee"
-	7. "Staff members"
-	8. "Player team unknown 1"
-	9. "Player team unknown 2"
-	10.  "Goalkeeper team unknown"
-6. ID: link ID from soccernet-v3 annotations
-7. UAI: item UAI from soccernet-v3 annotations
-
-Important note: player identities have been annotated only within one action, which means that a player has a
-different identity for each action he as been spotted in. This means that player ids are do not hold cross actions and are only valid within a given action.
+Compared to traditional street surveillance type re-identification dataset, the SoccerNet-v3 ReID dataset is particularly \ 
+challenging because soccer players from the same team have very similar appearance, which makes it hard to tell them apart.
 
 
 ## Instructions
-
-Here we provide a basic script for training a baseline model on the Soccernet-v3 training set, test it on the Soccernet-v3 \
-eval and test set and export ranking results on the Soccernet-v3 challenge set.
-Basic baseline script + basic config
-
 This repo is a fork of the [Torchreid](https://github.com/KaiyangZhou/deep-person-reid) framework for person re-identification.
-Make sure to have a look at the original Torchreid README in [TORCHREID_README.rst] for detailed installation and how-to instructions.
+Make sure to have a look at the original [Torchreid Readme](TORCHREID_README.rst) and the official [Torchreid documentation](https://kaiyangzhou.github.io/deep-person-reid/.) for detailed how-to instructions.
+
+### How to install Torchreid
+For installation guidelines, please follow the instructions in the original [Torchreid Readme](TORCHREID_README.rst).
+
+### How to train and test a baseline model
+We provide a basic script in [benchmarks/baseline](benchmarks/baseline) for training a baseline model on the Soccernet-v3 training set, evaluate rank-1 and mAP performance on the Soccernet-v3 \
+validation and test set, and finally export ranking results on the Soccernet-v3 challenge set for external evaluation.
+
+To train the baseline model, run:
+
+<code>python benchmarks/baseline/main.py --config-file configs/baseline_config.yaml</code>
+
+Running this script will automatically download the dataset in the folder specified by the _data.root_ config.
+
+Have a look at the YAML configuration file [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) and related default configuration [default_config.py](benchmarks/baseline/default_config.py) for more information about the available options.
+
+### How to manually download the dataset
+A [SoccerNet pip package](https://pypi.org/project/SoccerNet/) is available to easily download the data and the annotations. 
+
+To install the pip package simply run:
+
+<code>pip install SoccerNet</code>
+
+Then use the API to download the data of interest:
+
+```
+from SoccerNet.Downloader import SoccerNetDownloader
+mySoccerNetDownloader = SoccerNetDownloader(LocalDirectory="/path/to/SoccerNet")
+mySoccerNetDownloader.downloadDataTask(task="reid", split=["train", "valid", "test", "challenge"])
+```
+### How to export your ranking results for the challenge set
+Enable the `test.export_ranking_results` config in [default_config.py](benchmarks/baseline/default_config.py) or [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) 
+to export all ranking results for each target dataset. 
+Ranking results will be exported to a JSON file `ranking_results_***.json` in the directory specified by the `data.save_dir` config.
+
+To export ranking results for the SoccerNet ReID challenge set, make sure to add 'soccernetv3_challenge' to the list of target datasets in the `data.targets` config.
 
 
-
-## What has been changed from the original Torchreid codebase
-
-- new Soccernet dataset class, 3 classes for 3 datasets
-- Custom evaluation script to assess model performance on Soccernet
-- New option to export ranking results
-- camid within code is replaced with action index and in rank.y, that info is used to remove gallery samples from other actions
+### How to submit your ranking results to participate in the challenge
+The resulting JSON file should be submitted on the online evaluation platform.
+Further information will be provided soon.
 
 
-## Useful links
-- [Soccernet website](https://soccer-net.org/)
-- [ACAD Research](https://www.youtube.com/channel/UCYkYA7OwnM07Cx78iZ6RHig)
-- [Torchreid](https://github.com/KaiyangZhou/deep-person-reid)
+## Future improvements
+This repository will be actively maintained during the course of the challenge, make sure to subscribe and come back frequently to get the latest updates!
+Here are some of the things we plan to add or improve:
+- An eval.py script to compute performance of exported ranking result in JSON format.
+- A more accurate description of the dataset structure and file naming convention.
+- Some stats about the dataset size.
+- Faster ranking script in rank.py to assess model performance.
+- ...
+
+Feel free to suggest any changes.
 
 
 ## Our other Challenges
-Check out our other challenges related to SoccerNet!
+Check out our other challenges related to SoccerNet:
 - [Action Spotting](https://github.com/SoccerNet/sn-spotting)
 - [Replay Grounding](https://github.com/SoccerNet/sn-grounding)
 - [Calibration](https://github.com/SoccerNet/sn-calibration)
 - [Re-Identification](https://github.com/SoccerNet/sn-reid)
 - [Tracking](https://github.com/SoccerNet/sn-tracking)
 
-## Citation
 
+## Citation
 For further information check out the paper and supplementary material:
 https://openaccess.thecvf.com/content/CVPR2021W/CVSports/papers/Deliege_SoccerNet-v2_A_Dataset_and_Benchmarks_for_Holistic_Understanding_of_Broadcast_CVPRW_2021_paper.pdf
 
@@ -112,26 +111,17 @@ Please cite our work if you use our dataset:
 }
 ```
 
-## Questions and Remarks
-If you have any question or remark regarding the challenge and related materials, feel free to open a Github issue.
 
-## Keywords
-Person re-identification, re-id, ReID, Soccernet, computer vision, sport, AI, deep learning, Pytorch, Torchreid, CVPR, challenge
+## Useful links
+- [Soccernet official website](https://soccer-net.org/)
+- [ACAD Research](https://www.youtube.com/channel/UCYkYA7OwnM07Cx78iZ6RHig)
+- [Torchreid](https://github.com/KaiyangZhou/deep-person-reid)
+
+
+## Questions and Remarks
+If you have any question or remark regarding the challenge and related materials, please raise a GitHub issue in this repository, or contact us directly on [Discord](https://discord.gg/SM8uHj9mkP).
+
 
 ## Sponsorship
-This challenge is officially sponsored by [Synergy Sports](https://synergysports.com/), a division of [Sportradar](https://www.sportradar.com/)
+This challenge is officially sponsored by [Synergy Sports](https://synergysports.com/), a division of [Sportradar](https://www.sportradar.com/).
 
-
-[comment]: <> (TODO)
-[comment]: <> samples from action frame with no match have been put in gallery
-[comment]: <> action with no human bbox removed
-[comment]: <> Frames/actions with no human bbox
-[comment]: <> Annotation errors: multiples person with same link ID
-[comment]: <> Actions with no links, i.e. with no bbox that could be used as query
-[comment]: <> 
-[comment]: <> 
-[comment]: <> 
-[comment]: <> 
-[comment]: <> 
-[comment]: <> 
-[comment]: <> 
