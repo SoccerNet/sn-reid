@@ -2,30 +2,29 @@ from __future__ import division, print_function, absolute_import
 import glob
 import os
 import os.path as osp
-from torchreid.utils import mkdir_if_missing
 from ..dataset import ImageDataset
-from SoccerNet.Downloader import SoccerNetDownloader
+from SoccerNet.Downloader import SoccerNetDownloader as SNdl
+import zipfile
 
 
 class Soccernetv3(ImageDataset):
     """Soccernet-v3 Dataset.
     """
     dataset_dir = 'soccernetv3'
-    dataset_url = None
 
     def __init__(self, root='', soccernetv3_training_subset=1.0, **kwargs):
         assert 1.0 >= soccernetv3_training_subset > 0.0
 
         self.root = osp.abspath(osp.expanduser(root))
         self.dataset_dir = osp.join(self.root, self.dataset_dir)
-        # self.download_dataset(self.dataset_dir, self.dataset_url)
+        self.reid_dataset_dir = self.download_soccernet_dataset(self.dataset_dir, ["valid", "train"])
 
-        self.train_dir = osp.join(self.dataset_dir, 'train')
-        self.query_dir = osp.join(self.dataset_dir, 'valid/query')
-        self.gallery_dir = osp.join(self.dataset_dir, 'valid/gallery')
+        self.train_dir = osp.join(self.reid_dataset_dir, 'train')
+        self.query_dir = osp.join(self.reid_dataset_dir, 'valid/query')
+        self.gallery_dir = osp.join(self.reid_dataset_dir, 'valid/gallery')
 
         required_files = [
-            self.dataset_dir, self.train_dir, self.query_dir, self.gallery_dir
+            self.reid_dataset_dir, self.train_dir, self.query_dir, self.gallery_dir
         ]
 
         self.check_before_run(required_files)
@@ -63,28 +62,43 @@ class Soccernetv3(ImageDataset):
 
         return data, pid2label, ids_counter
 
-    def download_dataset(self, dataset_dir, dataset_url):
-        if osp.exists(dataset_dir):
-            return
+    @staticmethod
+    def download_soccernet_dataset(dataset_dir, split):
+        task = "reid"
+        reid_dataset_dir = osp.join(dataset_dir, task)
 
-        print('Creating directory "{}"'.format(dataset_dir))
-        mkdir_if_missing(dataset_dir)
+        mySNdl = SNdl(LocalDirectory=dataset_dir)
 
-        print(
-            'Downloading {} dataset to "{}"'.format(
-                self.__class__.__name__, dataset_dir
-            )
-        )
-        mySoccerNetDownloader = SoccerNetDownloader(LocalDirectory=dataset_dir)
-        mySoccerNetDownloader.password = "SoccerNet_Reviewers_SDATA"
-        mySoccerNetDownloader.downloadDataTask(task="reid", split=["train", "valid", "test", "challenge"])
+        for set_type in split:
+            # download SoccerNet dataset subsets specified by 'set_type' (train/valid/test/challenge)
+            path_to_set = osp.join(reid_dataset_dir, set_type)
+            if osp.exists(path_to_set):
+                print("SoccerNet {} set was already downloaded and unzipped at {}.".format(set_type, path_to_set))
+                continue
 
-        # TODO unzip train.zip, valid.zip, test.zip, challenge.zip
+            mySNdl.downloadDataTask(task=task, split=[set_type])
 
-        print('{} dataset is ready'.format(self.__class__.__name__))
+            print("Unzipping {} set to '{}' ...".format(set_type, reid_dataset_dir))
+            path_to_zip_file = osp.join(reid_dataset_dir, set_type + ".zip")
+            if not osp.exists(path_to_zip_file):
+                raise FileNotFoundError("Missing zip file {}.".format(path_to_zip_file))
+            else:
+                with zipfile.ZipFile(path_to_zip_file, "r") as zip_ref:
+                    zip_ref.extractall(reid_dataset_dir)
+            print("Deleting {} set zip file at '{}'...".format(set_type, path_to_zip_file))
+            os.remove(path_to_zip_file)
+
+            print('SoccerNet {} set is ready.'.format(set_type))
+
+        return reid_dataset_dir
 
     @staticmethod
     def extract_sample_info(filename):
+        """ Extract sample annotations from its filename
+            File naming convention is:
+            - For public samples (train/valid/test set): '<bbox_idx>-<action_idx>-<person_uid>-<frame_idx>-<clazz>-<id>-<UAI>-<image_size>.png'
+            - For anonymous samples (challenge set): '<bbox_idx>-<action_idx>-<image_size>.png'
+        """
         info = {}
         splits = filename.split(".")[0].split("-")
         if len(splits) == 8:
@@ -116,13 +130,13 @@ class Soccernetv3Test(Soccernetv3):
     def __init__(self, root='', **kwargs):
         self.root = osp.abspath(osp.expanduser(root))
         self.dataset_dir = osp.join(self.root, self.dataset_dir)
-        self.download_dataset(self.dataset_dir, self.dataset_url)
+        self.reid_dataset_dir = self.download_soccernet_dataset(self.dataset_dir, ["test"])
 
-        self.query_dir = osp.join(self.dataset_dir, 'test/query')
-        self.gallery_dir = osp.join(self.dataset_dir, 'test/gallery')
+        self.query_dir = osp.join(self.reid_dataset_dir, 'test/query')
+        self.gallery_dir = osp.join(self.reid_dataset_dir, 'test/gallery')
 
         required_files = [
-            self.dataset_dir, self.query_dir, self.gallery_dir
+            self.reid_dataset_dir, self.query_dir, self.gallery_dir
         ]
 
         self.check_before_run(required_files)
@@ -140,13 +154,13 @@ class Soccernetv3Challenge(Soccernetv3):
     def __init__(self, root='', **kwargs):
         self.root = osp.abspath(osp.expanduser(root))
         self.dataset_dir = osp.join(self.root, self.dataset_dir)
-        self.download_dataset(self.dataset_dir, self.dataset_url)
+        self.reid_dataset_dir = self.download_soccernet_dataset(self.dataset_dir, ["challenge"])
 
-        self.query_dir = osp.join(self.dataset_dir, 'challenge/query')
-        self.gallery_dir = osp.join(self.dataset_dir, 'challenge/gallery')
+        self.query_dir = osp.join(self.reid_dataset_dir, 'challenge/query')
+        self.gallery_dir = osp.join(self.reid_dataset_dir, 'challenge/gallery')
 
         required_files = [
-            self.dataset_dir, self.query_dir, self.gallery_dir
+            self.reid_dataset_dir, self.query_dir, self.gallery_dir
         ]
 
         self.check_before_run(required_files)

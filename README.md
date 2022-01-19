@@ -6,16 +6,14 @@ More information about the dataset can be found on our [official website](https:
 In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
 The winner of the competition will be announced in June 2022.
 
-SoccerNet Re-Identification (ReID) is part of the SoccerNet-v3 dataset, which is an extension of SoccerNet-v2 with new and challenging tasks including 
-action spotting, camera shot segmentation with boundary detection, replay grounding, calibration, multi-view player re-identification and multi-player tracking.
-
 <a href="">
 <p align="center"><img src="images/Thumbnail.png" width="720"></p>
 </a>
 
 [comment]: <> (<p align="center"><img src="images/GraphicalAbstract-SoccerNet-V2-1.png" width="640"></p>)
 
-
+SoccerNet Re-Identification (ReID) is part of the SoccerNet-v3 dataset, which is an extension of SoccerNet-v2 with new and challenging tasks including 
+action spotting, camera shot segmentation with boundary detection, replay grounding, calibration, multi-view player re-identification and multi-player tracking.
 The participation deadline is fixed at the 30th of May 2022.
 The official rules and guidelines are available on [ChallengeRules.md](ChallengeRules.md).
 
@@ -42,26 +40,39 @@ validation and test set, and finally export ranking results on the Soccernet-v3 
 
 To train the baseline model, run:
 
-<code>python benchmarks/baseline/main.py --config-file configs/baseline_config.yaml</code>
+```
+python benchmarks/baseline/main.py --config-file configs/baseline_config.yaml
+```
 
 Running this script will automatically download the dataset in the folder specified by the `data.root` config.
 
 Have a look at the YAML configuration file [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) and related default configuration [default_config.py](benchmarks/baseline/default_config.py) for more information about the available options.
 
 ### How to manually download the dataset
-A [SoccerNet pip package](https://pypi.org/project/SoccerNet/) is available to easily download the data and the annotations. 
+The SoccerNet ReID dataset is automatically downloaded and extracted by Torchreid upon first usage, 
+but you can still use the [SoccerNet pip package](https://pypi.org/project/SoccerNet/) to easily download the data and annotations manually. 
 
 To install the pip package simply run:
 
-<code>pip install SoccerNet</code>
+```
+pip install SoccerNet
+```
 
 Then use the API to download the data of interest:
 
 ```
 from SoccerNet.Downloader import SoccerNetDownloader
-mySoccerNetDownloader = SoccerNetDownloader(LocalDirectory="/path/to/SoccerNet")
+mySoccerNetDownloader = SoccerNetDownloader(LocalDirectory="/path/to/project/datasets/soccernetv3")
 mySoccerNetDownloader.downloadDataTask(task="reid", split=["train", "valid", "test", "challenge"])
 ```
+
+This will download four zip files under `/path/to/project/datasets/soccernetv3/reid/{train.zip, valid.zip, test.zip, challenge.zip}`.
+Unzip these four zip files and put four resulting folders under the same path, i.e. `/path/to/project/datasets/soccernetv3/reid/{train, valid, test, challenge}`.
+The Torchreid config `data.root` should then point to `/path/to/project/datasets` or simply `datasets`, the framework will then look for the four sets under `/path/to/project/datasets/soccernetv3/reid/`.
+In above instructions, replace `/path/to/project/datasets` by any path of your choice, but keep the `soccernetv3/reid/{train, valid, test, challenge}` folder structure.
+
+For further information, have a look at [soccernetv3.py](torchreid/data/datasets/image/soccernetv3.py)).
+
 ### How to export your ranking results for the challenge set
 Enable the `test.export_ranking_results` config in [default_config.py](benchmarks/baseline/default_config.py) or [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) 
 to export all ranking results for each target dataset. 

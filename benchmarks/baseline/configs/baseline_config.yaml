@@ -3,6 +3,7 @@ model:
 
 data:
   type: 'image'
+  root: 'datasets' # SoccerNet train/test/valid/challenge sets will be downloaded under '/path/to/project/datasets/soccernetv3/reid/'
   height: 256
   width: 128
   workers: 4
