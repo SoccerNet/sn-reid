@@ -99,17 +99,17 @@ For further information, have a look at [soccernetv3.py](torchreid/data/datasets
 
 | Dataset       | Size |
 | ---           |  ---    |
-| train.zip     | 12.12GB
-| valid.zip     | 2.35GB
-| test.zip      | 2.41GB
-| challenge.zip | 1.75GB
+| train.zip     | 12.12 GB
+| valid.zip     | 2.35 GB
+| test.zip      | 2.41 GB
+| challenge.zip | 1.75 GB
 
 ### How to export your ranking results for the challenge set
 Enable the `test.export_ranking_results` config in [default_config.py](benchmarks/baseline/default_config.py) or [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) 
 to export all ranking results for each target dataset. 
 Ranking results will be exported to a JSON file `ranking_results_***.json` in the directory specified by the `data.save_dir` config.
 
-To export ranking results for the SoccerNet ReID challenge set, make sure to add 'soccernetv3_challenge' to the list of target datasets in the `data.targets` config.
+To export ranking results for the SoccerNet ReID challenge set, make sure to add `'soccernetv3_challenge'` to the list of target datasets in the `data.targets` config.
 
 
 ### How to submit your ranking results to participate in the challenge
