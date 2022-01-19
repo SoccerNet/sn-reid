@@ -15,6 +15,8 @@ action spotting, camera shot segmentation with boundary detection, replay ground
 The participation deadline is fixed at the 30th of May 2022.
 The official rules and guidelines are available on [ChallengeRules.md](ChallengeRules.md).
 
+
+Make sure to watch our announcement video on Youtube:
 <a href="https://youtu.be/tA9E1hkiyB0">
 <p align="center"><img src="images/Thumbnail.png" width="720"></p>
 </a>
