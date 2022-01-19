@@ -34,7 +34,29 @@ This repo is a fork of the [Torchreid](https://github.com/KaiyangZhou/deep-perso
 Make sure to have a look at the original [Torchreid Readme](TORCHREID_README.rst) and the official [Torchreid documentation](https://kaiyangzhou.github.io/deep-person-reid/.) for detailed how-to instructions.
 
 ### How to install Torchreid
-For installation guidelines, please follow the instructions in the original [Torchreid Readme](TORCHREID_README.rst).
+For installation guidelines, we adapt the instructions from the original [Torchreid Readme](TORCHREID_README.rst) :
+
+First, make sure [conda](https://www.anaconda.com/distribution/) is installed.
+
+```
+    # cd to your preferred directory and clone this repo
+    git clone https://github.com/SoccerNet/sn-reid.git
+
+    # create environment
+    cd sn-reid/
+    conda create --name sn-reid python=3.7
+    conda activate sn-reid
+
+    # install dependencies
+    # make sure `which python` and `which pip` point to the correct path
+    pip install -r requirements.txt
+
+    # install torch and torchvision (select the proper cuda version to suit your machine)
+    conda install pytorch torchvision cudatoolkit=9.0 -c pytorch
+
+    # install torchreid (don't need to re-build it if you modify the source code)
+    python setup.py develop
+```
 
 ### How to train and test a baseline model
 We provide a basic script in [benchmarks/baseline](benchmarks/baseline) for training a baseline model on the Soccernet-v3 training set, evaluate rank-1 and mAP performance on the Soccernet-v3
@@ -78,9 +100,9 @@ For further information, have a look at [soccernetv3.py](torchreid/data/datasets
 | Dataset       | Size |
 | ---           |  ---    |
 | train.zip     | 12.12GB
-| talid.zip     | 2.35GB
+| valid.zip     | 2.35GB
 | test.zip      | 2.41GB
-| thallenge.zip | 1.75GB
+| challenge.zip | 1.75GB
 
 ### How to export your ranking results for the challenge set
 Enable the `test.export_ranking_results` config in [default_config.py](benchmarks/baseline/default_config.py) or [baseline_config.yaml](benchmarks/baseline/configs/baseline_config.yaml) 
