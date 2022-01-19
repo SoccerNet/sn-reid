@@ -33,7 +33,7 @@ challenging because soccer players from the same team have very similar appearan
 This repo is a fork of the [Torchreid](https://github.com/KaiyangZhou/deep-person-reid) framework for person re-identification.
 Make sure to have a look at the original [Torchreid Readme](TORCHREID_README.rst) and the official [Torchreid documentation](https://kaiyangzhou.github.io/deep-person-reid/.) for detailed how-to instructions.
 
-### How to install Torchreid
+### How to install the SoccerNet ReID development kit
 For installation guidelines, we adapt the instructions from the original [Torchreid Readme](TORCHREID_README.rst) :
 
 First, make sure [conda](https://www.anaconda.com/distribution/) is installed.
