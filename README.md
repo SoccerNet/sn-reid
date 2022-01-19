@@ -65,7 +65,7 @@ validation and test set, and finally export ranking results on the Soccernet-v3 
 To train the baseline model, run:
 
 ```
-python benchmarks/baseline/main.py --config-file configs/baseline_config.yaml
+python benchmarks/baseline/main.py --config-file benchmarks/baseline/configs/baseline_config.yaml
 ```
 
 Running this script will automatically download the dataset in the folder specified by the `data.root` config.
