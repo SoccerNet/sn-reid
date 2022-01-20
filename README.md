@@ -18,7 +18,7 @@ The official rules and guidelines are available on [ChallengeRules.md](Challenge
 
 Make sure to watch our announcement video on Youtube:
 <a href="https://youtu.be/tA9E1hkiyB0">
-<p align="center"><img src="images/Thumbnail.png" width="720"></p>
+<p align="center"><img src="images/Thumbnail.png" width="360"></p>
 </a>
 
 ## Challenge description
