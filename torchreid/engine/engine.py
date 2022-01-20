@@ -493,7 +493,7 @@ class Engine(object):
 
         date = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S:%f')[:-3]
         distmat_filename = osp.join(save_dir, "ranking_results_" + dataset_name + "_" + date + ".json")
-        print("Exporting distmat to '{}' for external evaluation...".format(distmat_filename))
+        print("Exporting ranking results for dataset {} to '{}' for external evaluation...".format(dataset_name, distmat_filename))
 
         num_q, num_g = distmat.shape
         indices = np.argsort(distmat, axis=1)
