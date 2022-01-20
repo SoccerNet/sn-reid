@@ -28,7 +28,7 @@ The goal of the challenge is to re-identify soccer players across multiple camer
 Compared to traditional street surveillance type re-identification dataset, the SoccerNet-v3 ReID dataset is particularly
 challenging because soccer players from the same team have very similar appearance, which makes it hard to tell them apart.
 
-![Alt Text](images/soccernet_correspondences.gif)
+![Alt Text](images/soccernet_correspondences_half_fr_compressed.gif)
 
 ## Instructions
 This repo is a fork of the [Torchreid](https://github.com/KaiyangZhou/deep-person-reid) framework for person re-identification.
