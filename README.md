@@ -6,9 +6,11 @@ More information about the dataset can be found on our [official website](https:
 In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
 The winner of the competition will be announced in June 2022.
 
+&nbsp;
+
 <p align="center"><img src="images/multiview_links.png" width="640"></p>
 
-[comment]: <> (<p align="center"><img src="images/GraphicalAbstract-SoccerNet-V2-1.png" width="640"></p>)
+&nbsp;
 
 SoccerNet Re-Identification (ReID) is part of the SoccerNet-v3 dataset, which is an extension of SoccerNet-v2 with new and challenging tasks including 
 action spotting, camera shot segmentation with boundary detection, replay grounding, calibration, multi-view player re-identification and multi-player tracking.
@@ -17,6 +19,8 @@ The official rules and guidelines are available on [ChallengeRules.md](Challenge
 
 
 Make sure to watch our announcement video on Youtube:
+
+&nbsp;
 <a href="https://youtu.be/tA9E1hkiyB0">
 <p align="center"><img src="images/Thumbnail.png" width="520"></p>
 </a>
@@ -28,7 +32,10 @@ The goal of the challenge is to re-identify soccer players across multiple camer
 Compared to traditional street surveillance type re-identification dataset, the SoccerNet-v3 ReID dataset is particularly
 challenging because soccer players from the same team have very similar appearance, which makes it hard to tell them apart.
 
+&nbsp;
 ![Alt Text](images/soccernet_correspondences_half_fr_compressed.gif)
+
+&nbsp;
 
 ## Instructions
 This repo is a fork of the [Torchreid](https://github.com/KaiyangZhou/deep-person-reid) framework for person re-identification.
