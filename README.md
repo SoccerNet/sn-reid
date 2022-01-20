@@ -7,9 +7,7 @@ In this repository, you will find all the instructions and codebase for particip
 The winner of the competition will be announced in June 2022.
 
 &nbsp;
-
 <p align="center"><img src="images/multiview_links.png" width="640"></p>
-
 &nbsp;
 
 SoccerNet Re-Identification (ReID) is part of the SoccerNet-v3 dataset, which is an extension of SoccerNet-v2 with new and challenging tasks including 
@@ -33,8 +31,8 @@ Compared to traditional street surveillance type re-identification dataset, the 
 challenging because soccer players from the same team have very similar appearance, which makes it hard to tell them apart.
 
 &nbsp;
-![Alt Text](images/soccernet_correspondences_half_fr_compressed.gif)
 
+![Alt Text](images/soccernet_correspondences_half_fr_compressed.gif)
 &nbsp;
 
 ## Instructions
