@@ -161,7 +161,7 @@ class Engine(object):
             ranks (list, optional): cmc ranks to be computed. Default is [1, 5, 10, 20].
             rerank (bool, optional): uses person re-ranking (by Zhong et al. CVPR'17).
                 Default is False. This is only enabled when test_only=True.
-            export_ranking_results: (bool, optional): export query to gallery distmat to CSV file for each target dataset
+            export_ranking_results: (bool, optional): export query to gallery ranking results to CSV file for each target dataset
         """
 
         if test_only:
@@ -492,8 +492,8 @@ class Engine(object):
     def export_ranking_results_for_ext_eval(self, distmat, q_pids, q_action_indices, g_pids, g_action_indices, save_dir, dataset_name):
 
         date = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S:%f')[:-3]
-        distmat_filename = osp.join(save_dir, "ranking_results_" + dataset_name + "_" + date + ".json")
-        print("Exporting ranking results for dataset {} to '{}' for external evaluation...".format(dataset_name, distmat_filename))
+        ranking_results_filename = osp.join(save_dir, "ranking_results_" + dataset_name + "_" + date + ".json")
+        print("Exporting ranking results to '{}' for external evaluation...".format(ranking_results_filename))
 
         num_q, num_g = distmat.shape
         indices = np.argsort(distmat, axis=1)
@@ -521,5 +521,5 @@ class Engine(object):
             num_valid_q += 1.
 
         # dump ranking results to disk as json file
-        with open(distmat_filename, 'w') as fp:
+        with open(ranking_results_filename, 'w') as fp:
             json.dump(ranking_results, fp, sort_keys=True, indent=4)

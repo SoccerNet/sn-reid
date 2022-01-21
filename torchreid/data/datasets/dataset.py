@@ -40,7 +40,7 @@ class Dataset(object):
     _train_only = False
 
     # Set to True for datasets with test sets having hidden/private identity labels.
-    # Resulting query to gallery distmat should be exported for external evaluation with private identity labels.
+    # Resulting query to gallery ranking result should be exported for external evaluation with private identity labels.
     hidden_labels = False
 
     def __init__(

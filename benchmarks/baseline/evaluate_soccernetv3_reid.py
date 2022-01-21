@@ -10,10 +10,10 @@ def read_json(fpath):
     return obj
 
 
-def main(groundtruth_filename, ranking_result_filename):
+def main(groundtruth_filename, ranking_results_filename):
 
     grountruth = read_json(groundtruth_filename)
-    ranking_result = read_json(ranking_result_filename)
+    ranking_results = read_json(ranking_results_filename)
 
     queries_gt = grountruth["query"]
     galleries_gt = grountruth["gallery"]
@@ -35,11 +35,11 @@ def main(groundtruth_filename, ranking_result_filename):
         q_pid = query_gt["person_uid"]
         q_action_idx = query_gt["action_idx"]
 
-        if q_idx not in ranking_result:
+        if q_idx not in ranking_results:
             raise ValueError("No ranking provided for query '{}'. Make sure to provide ranking result for all queries.".format(q_idx))
 
         seen_galleries = set()
-        gallery_ranking_idx = ranking_result[q_idx]
+        gallery_ranking_idx = ranking_results[q_idx]
         gallery_ranking_pid = []
         for g_idx in gallery_ranking_idx:
             if not isinstance(g_idx, int):
@@ -93,7 +93,7 @@ def main(groundtruth_filename, ranking_result_filename):
     cmc, mAP = result
 
     print('** Results **')
-    print('filename: {}'.format(os.path.basename(ranking_result_filename)))
+    print('filename: {}'.format(os.path.basename(ranking_results_filename)))
     print('mAP: {:.1%}'.format(mAP))
     ranks = [1]
     for r in ranks:
@@ -109,8 +109,8 @@ def main(groundtruth_filename, ranking_result_filename):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-dm", "--distance_matrix",
-                        help="distance matrix",
+    parser.add_argument("-rs", "--ranking_results",
+                        help="ranking result",
                         type=str,
                         default="")
     parser.add_argument("-gt", "--groundtruth",
@@ -119,4 +119,4 @@ if __name__ == "__main__":
                         default="")
     parsed_args = parser.parse_args()
 
-    main(parsed_args.groundtruth, parsed_args.distance_matrix)
+    main(parsed_args.groundtruth, parsed_args.ranking_results)
