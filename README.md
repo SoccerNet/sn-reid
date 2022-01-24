@@ -117,6 +117,15 @@ Ranking results will be exported to a JSON file `ranking_results_***.json` in th
 
 To export ranking results for the SoccerNet ReID challenge set, make sure to add `'soccernetv3_challenge'` to the list of target datasets in the `data.targets` config.
 
+### How to test the exported ranking results locally
+To evaluate locally the ranking performance on the exported `ranking_results_***.json`, you can use the [evaluation script](tools/evaluate_soccernetv3_reid.py) provided in the tools directory:
+
+```
+python tools/evaluate_soccernetv3_reid.py -rs ranking_results_***.json -gt /path/to/project/datasets/soccernetv3/reid/test/test_bbox_info.json
+```
+
+For that purpose, you'll need to provide the location of the corresponding ground truth file, i.e. `test_bbox_info.json` for the test set, which is part of the dataset you downloaded before.
+Make sure to use the correct ground truth file (valid or test) with respect to the set on which the ranking result file was computed.
 
 ### How to submit your ranking results to participate in the challenge
 The resulting JSON file should be submitted on the online evaluation platform.
