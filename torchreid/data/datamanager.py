@@ -127,7 +127,7 @@ class ImageDataManager(DataManager):
             Default is False.
         market1501_500k (bool, optional): add 500K distractors to the gallery
             set in market1501. Default is False.
-        soccernetv3_training_subset (bool, optional): # Use 'training_subset'% of total number of training set actions
+        soccernetv3_training_subset (float, optional): Use 'training_subset'% of total number of training set actions
             at training stage. Use this option for faster training. Set to 1.0 to use full training set.
 
     Examples::
