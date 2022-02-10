@@ -128,14 +128,13 @@ For that purpose, you'll need to provide the location of the corresponding groun
 Make sure to use the correct ground truth file (valid or test) with respect to the set on which the ranking result file was computed.
 
 ### How to submit your ranking results to participate in the challenge
-The resulting JSON file should be submitted on the online evaluation platform.
-Further information will be provided soon.
+In order to participate in the challenge, the resulting JSON file should be submitted on the online evaluation platform [EvalAI](https://eval.ai/web/challenges/challenge-page/1538/evaluation).
+Further information can be found on the EvalAI website.
 
 
 ## Future improvements
 This repository will be actively maintained during the course of the challenge, make sure to subscribe and come back frequently to get the latest updates!
 Here are some of the things we plan to add or improve:
-- An eval.py script to compute performance of exported ranking result in JSON format.
 - A more accurate description of the dataset structure and file naming convention.
 - Some stats about the dataset size.
 - Faster ranking script in rank.py to assess model performance.

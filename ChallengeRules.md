@@ -9,7 +9,7 @@ SoccerNet-v3 is composed of 300k manual annotations, span 500 complete soccer ga
 
 We propose the SoccerNet-v3 ReID challenge to encourage the development of state-of-the-art ReID algorithm for sport player retrieval in broadcast videos.
 
-We provide an [evaluation server]() for anyone competing in the SoccerNet-v3 ReID challenge. 
+We provide an [evaluation server](https://eval.ai/web/challenges/challenge-page/1538/evaluation) for anyone competing in the SoccerNet-v3 ReID challenge. 
 This evaluation server handles predictions for the open **test** set and the segregated **challenge** set.
 
 Winners will be announced in June 2022. 
@@ -18,7 +18,7 @@ Prizes 💲💲💲 include $1000 cash award, sponsored by [Synergy Sports](http
 
 ## Who can participate / How to participate?
 
- - Any individual can participate to the challenge, except the organizers.
+ - Any individual can participate in the challenge, except the organizers.
  - The participants are recommended to form a team to participate.
  - Each team can have one or more members. 
  - An individual/team can compete on both task.
@@ -38,10 +38,10 @@ Prizes 💲💲💲 include $1000 cash award, sponsored by [Synergy Sports](http
 
 ## Important dates
 
-Note that these dates are tentative and subject to changes if necessary.
+Note that these dates are tentative and subject to change if necessary.
 
  - **February 1:** Open evaluation server on the (Open) Test set.
- - **February 15:** Open evaluation server on the (Seggregated) Challenge set.
+ - **February 15:** Open evaluation server on the (Segregated) Challenge set.
  - **May 30:** Close evaluation server.
  - **June 6:** Deadline for submitting the report.
  - **June TBD:** A full-day workshop at CVPR 2022.
