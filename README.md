@@ -2,7 +2,7 @@
 Welcome to the Development Kit for the SoccerNet Re-Identification Task and Challenge.
 This kit is meant as a help to get started working with the SoccerNet data and the proposed task.
 In this task, participants will have to re-identify soccer players across multiple camera viewpoints.
-More information about the dataset can be found on our [official website](https://soccer-net.org/).
+More information about the dataset can be found on our [official website](https://www.soccer-net.org/).
 In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
 The winner of the competition will be announced in June 2022.
 
