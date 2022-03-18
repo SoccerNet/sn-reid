@@ -23,8 +23,10 @@ Prizes 💲💲💲 include $1000 cash award, sponsored by [Synergy Sports](http
  - Each team can have one or more members. 
  - An individual/team can compete on both task.
  - An individual associated with multiple teams (for a given task) or a team with multiple accounts will be disqualified.
- - To solve the ReID task, a participant can only use players image crops and labels provided in the SoccerNet-v3 ReID dataset, which means using external information from other versions of the SoccerNet-v3 dataset is not allowed.
- - Participants can therefore only rely on player appearance to solve the task.
+ - To solve the ReID task, a participant can only use player image crops and labels provided in the SoccerNet-v3 ReID dataset, which means using external information from other versions of the SoccerNet-v3 dataset is forbidden. Participants can therefore only rely on player appearance to solve the task.
+ - Any information within image crops or sample labels can be used to solve the task: global body appearance, facial recognition, OCR for jersey numbers, ...
+ - Participants can use any **public** dataset to pretrain their model. Any public dataset or codebase used for the challenge must be mentioned in the final report.
+ - Participants are allowed to train their final model on all provided data (train + valid + test sets) before evaluating on the challenge set.
  - If you have any doubts regarding these rules, please contact the challenge administrators.
 
 

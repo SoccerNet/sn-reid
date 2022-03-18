@@ -8,7 +8,9 @@ import zipfile
 
 
 class Soccernetv3(ImageDataset):
-    """Soccernet-v3 Dataset.
+    """Soccernet-v3 train and valid sets. When set as "source" in the run configs (cfg.data.sources), the train set is
+    used for training. When set as "target" set in the run configs (cfg.data.targets), the valid set is used for performance
+    evaluation.
     """
     dataset_dir = 'soccernetv3'
 
@@ -98,6 +100,10 @@ class Soccernetv3(ImageDataset):
             File naming convention is:
             - For public samples (train/valid/test set): '<bbox_idx>-<action_idx>-<person_uid>-<frame_idx>-<clazz>-<id>-<UAI>-<image_size>.png'
             - For anonymous samples (challenge set): '<bbox_idx>-<action_idx>-<image_size>.png'
+            The "id" field is the identifier of the player within an action. When the id is given as a number, it refers
+             to the player jersey number. The jersey number is provided for a player if it can be seen at least once
+             within one frame of the action. If the jersey number is not visible in any frame of the action, then this
+             identifier is given as a letter.
         """
         info = {}
         splits = filename.split(".")[0].split("-")
@@ -126,7 +132,8 @@ class Soccernetv3(ImageDataset):
 
 
 class Soccernetv3Test(Soccernetv3):
-
+    """ Soccernet-v3 test set. Can be used as "target" set in the run configs (cfg.data.targets) for performance evaluation.
+    """
     def __init__(self, root='', **kwargs):
         self.root = osp.abspath(osp.expanduser(root))
         self.dataset_dir = osp.join(self.root, self.dataset_dir)
@@ -149,6 +156,10 @@ class Soccernetv3Test(Soccernetv3):
 
 
 class Soccernetv3Challenge(Soccernetv3):
+    """ Soccernet-v3 challenge set. Can be used as "target" set in the run configs (cfg.data.targets) together with the
+    export_ranking_results config (cfg.test.export_ranking_results) in order to export ranking results as a JSON file
+    for external evaluation.
+    """
     hidden_labels = True
 
     def __init__(self, root='', **kwargs):

@@ -1,8 +1,11 @@
+&nbsp;
+<p align="center"><img src="images/synergy_sportradar_logo.png" width="640"></p>
+
 # SoccerNet Re-Identification
 Welcome to the Development Kit for the SoccerNet Re-Identification Task and Challenge.
 This kit is meant as a help to get started working with the SoccerNet data and the proposed task.
 In this task, participants will have to re-identify soccer players across multiple camera viewpoints.
-More information about the dataset can be found on our [official website](https://www.soccer-net.org/).
+More general information about the SoccerNet dataset can be found on our [official website](https://www.soccer-net.org/).
 In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
 The winner of the competition will be announced in June 2022.
 
@@ -27,13 +30,90 @@ Make sure to watch our announcement video on Youtube:
 The SoccerNet Re-Identification (ReID) dataset is composed of 340.993 players thumbnails extracted from image frames of broadcast videos from 400 soccer games within 6 major leagues.
 The goal of the challenge is to re-identify soccer players across multiple camera viewpoints depicting the same action during the game.
 
+We call the first frame in which the action has been seen in the broadcast video as the "action frame".
+The other frames depicting the same action (at roughly the same timestamp), and appearing later in the broadcast video, are called the "replay frame".
+The goal of the challenge is to re-identify each soccer player in the action frame across the different replay frames.
+For that purpose, each bounding box from a given action frame will be considered as a query, and bounding boxes from the corresponding replay frames will be ranked according to their distance to each query.
+The SoccerNet ReID dataset is divided into training, validation, test and challenge sets.
+Labels for the challenge set are kept secret as participants to the challenge will be ranked according to their performance on it.
+The winner of the challenge will be the participant with the highest mAP score on the challenge set. 
+
 Compared to traditional street surveillance type re-identification dataset, the SoccerNet-v3 ReID dataset is particularly
 challenging because soccer players from the same team have very similar appearance, which makes it hard to tell them apart.
+On the other hand, each identity has a few number of samples, which render the model harder to train.
+There is also a big diversity in image resolution.
+
+**Important note**: Player identity labels are derived from links between bounding boxes within an action and are therefore only valid within the given action.
+Consequently, player identity labels do not hold across actions and a given player has a different identity for each action he has been spotted in.
+For that reason, during the evaluation process, only samples within the same action are matched against each other.
+During the training stage, it is up to the participants to implement strategies to mitigate the negative impact of image samples from different actions depicting the same player but labeled with different identities.
 
 &nbsp;
 
 ![Alt Text](images/soccernet_correspondences_half_fr_compressed.gif)
 &nbsp;
+
+
+### Dataset structure
+ReID samples are organized following the original SoccerNet dataset structure.
+The Soccernet-v3 ReID dataset is thus organized within a tree folder structure :
+
+`root` -> `{train, valid, test, challenge}` -> `championship` -> `season` -> `game` -> `action` -> `image files`
+
+Each action contains a set of samples, which are images files of players or referees cropped from the original Soccernet-v3 dataset using the bounding boxes annotations.
+Annotations for each sample are provided within the filename, as described in the next section.
+
+
+### Filename convention
+#### Train/valid/test sets
+Filename convention for samples in the train/valid/test sets:
+```
+<bbox_idx>_<action_idx>_<person_uid>_<frame_idx>_<class>_<ID>_<UAI>_<height>x<width>.png
+```
+e.g. '54404-1940-33397-5089-Player_team_right-9-014r002_00858c3b0003-775x449.png'
+
+1. `bbox_idx`: bounding box (or sample) index within the current train/query/gallery list of samples.
+2. `action_idx`: action index within the current set (train/valid/test/challenge). An action corresponds to an action frame and its related replay frames.
+3. `person_uid`: person identifier or PID, unique across all sets. Be aware that the same player/referee will be assigned different pids in different actions. All samples with a given 'person_uid' will therefore have the same 'action_idx'.     
+4. `frame_idx`: frame index (action frame or replay frame) within the current set (train/valid/test/challenge).
+5. `class`: person class within :
+    1. "Player team left"
+    2. "Player team right"
+    3. "Goalkeeper team left"
+    4. "Goalkeeper team right"
+    5. "Main referee"
+    6. "Side referee"
+    7. "Staff members"
+    8. "Player team unknown 1"
+    9. "Player team unknown 2"
+    10. "Goalkeeper team unknown"
+6. `ID`: this field corresponds to the "ID" field from the original soccernet-v3 annotations and the 'person_uid' field is derived from it. It refers to the identifier of the player within the action:
+   1. It corresponds to the player jersey number when it is given as a number. The jersey number is provided for a player if it can be seen at least once within one frame of the action. 
+   2. If the jersey number is not visible in any frame of the action, then this field is given as a letter.
+   3. The field is set to 'None' if the player cannot be seen in any other frame of the action.
+8. `UAI`: item UAI from original soccernet-v3 annotations.
+9. `height`: image height.
+10. `width`: image width.
+
+Participants are encouraged to use any provided information (image height/width, action_idx, class, ID) to develop better training strategies.
+
+#### Challenge set
+Annotations for the challenge set are kept secret, the filename convention for challenge set samples is therefore:
+```
+<bbox_idx>_<action_idx>_<height>x<width>.png
+```
+
+### Evaluation
+Similar to standard ReID datasets, each valid/test/challenge set is split into two subsets: query and gallery.
+Query samples are bounding boxes from action frames with at least one match in the replay frames.
+Gallery samples are bounding boxes from replay frames, or bounding boxes from action frames with no match.
+For each query, we compute a ranking of gallery samples **from the same action** and compute corresponding ranking performance: rank-1 and average precision.
+Query sample are therefore only matched against gallery samples from the same action. 
+This is different from classic street surveillance ReID datasets, where query samples are only matched against gallery samples from different camera viewpoints. 
+Our process for building the query/gallery split is illustrated in the next figure.
+
+&nbsp;
+<p align="center"><img src="images/soccernet-v3-reid-illustration.png" width="850"></p>
 
 ## Instructions
 This repo is a fork of the [Torchreid](https://github.com/KaiyangZhou/deep-person-reid) framework for person re-identification.
@@ -126,16 +206,16 @@ python tools/evaluate_soccernetv3_reid.py -rs ranking_results_***.json -gt /path
 
 For that purpose, you'll need to provide the location of the corresponding ground truth file, i.e. `test_bbox_info.json` for the test set, which is part of the dataset you downloaded before.
 Make sure to use the correct ground truth file (valid or test) with respect to the set on which the ranking result file was computed.
+Exported ranking results cannot be evaluated locally for the challenge set because the corresponding ground truth file is kept private from the participants. 
 
 ### How to submit your ranking results to participate in the challenge
-In order to participate in the challenge, the resulting JSON file should be submitted on the online evaluation platform [EvalAI](https://eval.ai/web/challenges/challenge-page/1538/evaluation).
+In order to participate in the challenge, the exported ranking results for the challenge set should be submitted as a JSON file on the online evaluation platform [EvalAI](https://eval.ai/web/challenges/challenge-page/1538/evaluation).
 Further information can be found on the EvalAI website.
 
 
 ## Future improvements
 This repository will be actively maintained during the course of the challenge, make sure to subscribe and come back frequently to get the latest updates!
 Here are some of the things we plan to add or improve:
-- A more accurate description of the dataset structure and file naming convention.
 - Some stats about the dataset size.
 - Faster ranking script in rank.py to assess model performance.
 - ...
@@ -156,7 +236,7 @@ Check out our other challenges related to SoccerNet:
 For further information check out the paper and supplementary material:
 https://openaccess.thecvf.com/content/CVPR2021W/CVSports/papers/Deliege_SoccerNet-v2_A_Dataset_and_Benchmarks_for_Holistic_Understanding_of_Broadcast_CVPRW_2021_paper.pdf
 
-Please cite our work if you use our dataset:
+Please cite our work if you use the SoccerNet dataset:
 ```bibtex
 @InProceedings{Deliège2020SoccerNetv2,
       title={SoccerNet-v2 : A Dataset and Benchmarks for Holistic Understanding of Broadcast Soccer Videos}, 
