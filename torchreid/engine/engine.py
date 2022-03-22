@@ -491,7 +491,7 @@ class Engine(object):
 
     def export_ranking_results_for_ext_eval(self, distmat, q_pids, q_action_indices, g_pids, g_action_indices, save_dir, dataset_name):
 
-        date = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S:%f')[:-3]
+        date = datetime.datetime.now().strftime('%Y-%m-%d_%H_%M_%S_%f')[:-3]
         ranking_results_filename = osp.join(save_dir, "ranking_results_" + dataset_name + "_" + date + ".json")
         print("Exporting ranking results to '{}' for external evaluation...".format(ranking_results_filename))
 
