@@ -264,8 +264,6 @@ This challenge is officially sponsored by [Synergy Sports](https://synergysports
 ## Citation
 If you use any DeepSportradar dataset in your research or wish to refer to the baseline results and discussion published [our paper](https://arxiv.org/abs/2208.08190), please use the following BibTeX entry:
 
-.. code-block:: bash
-
     @inproceedings{
     Van_Zandycke_2022,
     author = {Gabriel Van Zandycke and Vladimir Somers and Maxime Istasse and Carlo Del Don and Davide Zambrano},
