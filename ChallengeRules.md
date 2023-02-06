@@ -1,6 +1,6 @@
 # Guidelines for the SoccerNet Re-Identification Challenge
 
-The 1st [SoccerNet Person Re-Identification Challenge]() will be held from January to June 2022!
+The 2nd [SoccerNet Person Re-Identification Challenge]() will be held from February to June 2023!
 Subscribe (watch) the repo to receive the latest info regarding timeline and prizes!
 
 
@@ -9,11 +9,11 @@ SoccerNet-v3 is composed of 300k manual annotations, span 500 complete soccer ga
 
 We propose the SoccerNet-v3 ReID challenge to encourage the development of state-of-the-art ReID algorithm for sport player retrieval in broadcast videos.
 
-We provide an [evaluation server](https://eval.ai/web/challenges/challenge-page/1538/evaluation) for anyone competing in the SoccerNet-v3 ReID challenge. 
+We provide an [evaluation server](https://eval.ai/web/challenges/challenge-page/1548/) for anyone competing in the SoccerNet-v3 ReID challenge. 
 This evaluation server handles predictions for the open **test** set and the segregated **challenge** set.
 
-Winners will be announced in June 2022. 
-Prizes 💲💲💲 include $1000 cash award, sponsored by [Synergy Sports](https://synergysports.com/), a [SportRadar](https://www.sportradar.com/) division.
+Winners will be announced during the CVSports workshop at CVPR in June 2023. 
+Prizes 💲💲💲 include $500 cash award, sponsored by [Synergy Sports](https://synergysports.com/), a [SportRadar](https://www.sportradar.com/) division.
 
 
 ## Who can participate / How to participate?
@@ -42,8 +42,8 @@ Prizes 💲💲💲 include $1000 cash award, sponsored by [Synergy Sports](http
 
 Note that these dates are tentative and subject to change if necessary.
 
- - **February 1:** Open evaluation server on the (Open) Test set.
- - **February 15:** Open evaluation server on the (Segregated) Challenge set.
+ - **February 6:** Open evaluation server on the (Open) Test set.
+ - **February 6:** Open evaluation server on the (Segregated) Challenge set.
  - **May 30:** Close evaluation server.
  - **June 6:** Deadline for submitting the report.
  - **June TBD:** A full-day workshop at CVPR 2022.
