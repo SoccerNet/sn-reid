@@ -1,13 +1,13 @@
 &nbsp;
 <p align="center"><img src="images/synergy_sportradar_logo.png" width="640"></p>
 
-# SoccerNet Player Re-Identification
+# SoccerNet Player Re-Identification - *2023 EDITION*
 Welcome to the Development Kit and Dataset for the SoccerNet Re-Identification Task and Challenge.
 This kit is meant as a help to get started working with the SoccerNet data and the proposed task.
 In this task, participants will have to re-identify soccer players across multiple camera viewpoints.
 More general information about the SoccerNet dataset can be found on our [official website](https://www.soccer-net.org/).
 In this repository, you will find all the instructions and codebase for participating in this challenge and get a chance to win the 1000$ prize money!
-The winner of the competition will be announced in June 2022.
+The winner of the competition will be announced in June 2023.
 
 &nbsp;
 <p align="center"><img src="images/multiview_links.png" width="640"></p>
@@ -15,7 +15,7 @@ The winner of the competition will be announced in June 2022.
 
 SoccerNet Re-Identification (ReID) is part of the SoccerNet-v3 dataset, which is an extension of SoccerNet-v2 with new and challenging tasks including 
 action spotting, camera shot segmentation with boundary detection, replay grounding, calibration, multi-view player re-identification and multi-player tracking.
-The participation deadline is fixed at the 30th of May 2022.
+The participation deadline is fixed at the 25th of May 2023.
 The official rules and guidelines are available on [ChallengeRules.md](ChallengeRules.md).
 
 
@@ -209,7 +209,7 @@ Make sure to use the correct ground truth file (valid or test) with respect to t
 Exported ranking results cannot be evaluated locally for the challenge set because the corresponding ground truth file is kept private from the participants. 
 
 ### How to submit your ranking results to participate in the challenge
-In order to participate in the challenge, the exported ranking results for the challenge set should be submitted as a JSON file on the online evaluation platform [EvalAI](https://eval.ai/web/challenges/challenge-page/1538/evaluation).
+In order to participate in the challenge, the exported ranking results for the challenge set should be submitted as a JSON file on the online evaluation platform [EvalAI](https://eval.ai/web/challenges/challenge-page/1948/overview).
 Further information can be found on the EvalAI website.
 
 
