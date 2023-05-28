@@ -33,7 +33,7 @@ Prizes 💲💲💲 include $500 cash award, sponsored by [Synergy Sports](https
 ## How to win / What is the prize?
 
  - The winner will the individual/team who reaches the highest **mAP** performance on the **challenge** set.
- - The deadline to submit your results is May 30th at 11.59 pm Anywhere on earth.
+ - The deadline to submit your results is May 30th at 11.59 pm  Pacific Time.
  - The teams that perform best in each task will be granted $500 from our sponsor [Synergy Sports](https://synergysports.com/), a [SportRadar](https://www.sportradar.com/) division.
  - In order to be eligible for the prize, we require the individual/team to provide a short report describing the details of the methodology (CVPR format, max 3 pages)
 
